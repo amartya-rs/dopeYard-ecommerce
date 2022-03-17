@@ -1,0 +1,100 @@
+import { v4 as uuid } from "uuid";
+import * as images from "../../assets/image";
+/**
+ * Product Database can be added here.
+ * You can add products of your wish with different attributes
+ * */
+
+export const products = [
+   {
+      _id: uuid(),
+      imgUrl: images.em_hat_1,
+      title: "NAME TAG PATCH DAD HAT",
+      price: 1999,
+      discountPrice: 899,
+      categoryName: "cap",
+      inStock: true,
+      rating: 4,
+   },
+   {
+      _id: uuid(),
+      imgUrl: images.em_hoodie_1,
+      title: "THE WAY I AM HOODIE",
+      price: 4999,
+      discountPrice: 3999,
+      categoryName: "hoodie",
+      inStock: true,
+      rating: 4.5,
+   },
+   {
+      _id: uuid(),
+      imgUrl: images.em_lsleeve_2,
+      title: "SLIM SHADY LONGSLEEVE",
+      price: 2499,
+      discountPrice: 1999,
+      categoryName: "l-sleeve",
+      inStock: true,
+      rating: 4.1,
+   },
+   {
+      _id: uuid(),
+      imgUrl: images.em_hat_2,
+      title: "SSLP DAD HAT",
+      price: 1999,
+      discountPrice: 899,
+      categoryName: "cap",
+      inStock: true,
+      rating: 4,
+   },
+   {
+      _id: uuid(),
+      imgUrl: images.em_hoodie_2,
+      title: "TOP GUNNER PATCH HOODIE",
+      price: 4999,
+      discountPrice: 3999,
+      categoryName: "hoodie",
+      inStock: true,
+      rating: 4.8,
+   },
+   {
+      _id: uuid(),
+      imgUrl: images.em_tshirt_1,
+      title: "RECOVERY T-SHIRT",
+      price: 2499,
+      discountPrice: 1499,
+      categoryName: "t-shirt",
+      inStock: true,
+      rating: 4.7,
+   },
+   {
+      _id: uuid(),
+      imgUrl: images.em_tshirt_2,
+      title: "SLIM SHADY T-SHIRT",
+      price: 2499,
+      categoryName: "t-shirt",
+      discountPrice: 1499,
+      inStock: true,
+      rating: 4.4,
+   },
+   {
+      _id: uuid(),
+      imgUrl: images.em_lsleeve_1,
+      title: "UNCONQUERED LONGSLEEVE",
+      price: 2499,
+      discountPrice: 1999,
+      categoryName: "l-sleeve",
+      inStock: true,
+      rating: 4.8,
+   },
+
+   {
+      _id: uuid(),
+      imgUrl: images.em_lsleeve_3,
+      title: "I AM SHADY LONGSLEEVE",
+      price: 2499,
+      discountPrice: 1999,
+      categoryName: "l-sleeve",
+      inStock: false,
+      rating: 4.6,
+   },
+];
