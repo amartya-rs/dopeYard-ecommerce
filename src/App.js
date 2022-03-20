@@ -1,9 +1,10 @@
-import { HomePage } from "./pages/index";
+import { HomePage, ProductPage } from "./pages/index";
 
 const App = () => {
    return (
       <div className="App">
          <HomePage />
+         <ProductPage />
       </div>
    );
 };
