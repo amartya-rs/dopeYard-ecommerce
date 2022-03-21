@@ -1,0 +1,19 @@
+.signup-page {
+   display: grid;
+   grid-template-rows: 5rem 1fr;
+   grid-template-areas:
+      "top-nav"
+      "form";
+   height: 100vh;
+}
+
+.signup-page .main-nav {
+   grid-area: top-nav;
+}
+
+.signup-page .auth-form {
+   grid-area: form;
+   align-self: center;
+   justify-self: center;
+   gap: 1rem;
+}

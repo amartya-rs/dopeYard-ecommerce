@@ -1,0 +1,18 @@
+.login-page {
+   display: grid;
+   grid-template-rows: 5rem 1fr;
+   grid-template-areas:
+      "top-nav"
+      "form";
+   height: 100vh;
+}
+
+.login-page .main-nav {
+   grid-area: top-nav;
+}
+
+.login-page .auth-form {
+   align-self: center;
+   justify-self: center;
+   grid-area: form;
+}
