@@ -1,0 +1,37 @@
+.wishlist-page {
+   display: grid;
+   grid-template-rows: 4.5rem 1fr auto;
+   grid-template-areas:
+      "nav"
+      "main"
+      "footer";
+   min-height: 100vh;
+}
+
+.wishlist-page .main-nav {
+   grid-area: nav;
+}
+
+.wishlist-page main {
+   grid-area: main;
+
+   display: flex;
+   flex-wrap: wrap;
+   flex-direction: column;
+   align-items: center;
+}
+
+/*wishlish section*/
+.wishlist-items {
+   max-width: 85%;
+
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: flex-start;
+   gap: 1rem;
+}
+
+hr {
+   width: 85%;
+}
