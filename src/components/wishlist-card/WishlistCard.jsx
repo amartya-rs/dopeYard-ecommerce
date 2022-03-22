@@ -10,8 +10,8 @@ const WishlistCard = ({ card }) => {
          <div className="card-content">
             <h6 className="font-semibold">{card.title}</h6>
             <div className="price-wrapper">
-               <h5>{`₹ ${card.price}`}</h5>
-               <h6 className="strike-through">₹ 1999</h6>
+               <h5>{`₹ ${card.discountPrice}`}</h5>
+               <h6 className="strike-through">{card.price}</h6>
             </div>
             <button className="button primary">MOVE TO CART</button>
          </div>
