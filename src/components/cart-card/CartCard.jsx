@@ -1,12 +1,4 @@
-import { useCart } from "../../context/cart-context";
-
 const CartCard = ({ card }) => {
-   const { state, dispatch } = useCart();
-
-   const addToWishlist = (card) => {
-      dispatch({ type: "ADD_TO_WISHLIST", payload: card });
-   };
-
    return (
       <div className="card horizontal">
          <img className="card-img" src={card.imgUrl} alt="product" />
@@ -30,12 +22,7 @@ const CartCard = ({ card }) => {
             <button className="button secondary">
                <span>REMOVE FROM CART</span>
             </button>
-            <button
-               onClick={() => addToWishlist(card)}
-               className="button outline-secondary"
-            >
-               WISHLIST
-            </button>
+            <button className="button outline-secondary">WISHLIST</button>
          </div>
       </div>
    );
