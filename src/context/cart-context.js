@@ -10,8 +10,46 @@ const CartProvider = ({ children }) => {
          try {
             const response = await axios.get("/api/products");
             dispatch({
-               type: "UPDATE_DATA",
+               type: "SAVE_ALL_PRODUCTS",
                payload: response.data.products,
+            });
+         } catch (error) {
+            console.log(error);
+         }
+      })();
+   }, []);
+
+   //fetching cart data from server
+   useEffect(() => {
+      (async () => {
+         try {
+            const response = await axios.get(`/api/user/cart`, {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            });
+            dispatch({
+               type: "SAVE_CART",
+               payload: response.data.cart,
+            });
+         } catch (error) {
+            console.log(error);
+         }
+      })();
+   }, []);
+
+   //fetching wishlist data from the server
+   useEffect(() => {
+      (async () => {
+         try {
+            const response = await axios.get(`/api/user/wishlist`, {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            });
+            dispatch({
+               type: "SAVE_WISHLIST",
+               payload: response.data.wishlist,
             });
          } catch (error) {
             console.log(error);
@@ -38,10 +76,20 @@ const CartProvider = ({ children }) => {
    //reducer function
    const cartReducer = (state, action) => {
       switch (action.type) {
-         case "UPDATE_DATA":
+         case "SAVE_ALL_PRODUCTS":
             return {
                ...state,
                productData: action.payload,
+            };
+         case "SAVE_CART":
+            return {
+               ...state,
+               cartData: action.payload,
+            };
+         case "SAVE_WISHLIST":
+            return {
+               ...state,
+               wishlistData: action.payload,
             };
 
          default:
@@ -51,6 +99,8 @@ const CartProvider = ({ children }) => {
 
    const [state, dispatch] = useReducer(cartReducer, {
       productData: [],
+      wishlistData: [],
+      cartData: [],
    });
 
    return (
