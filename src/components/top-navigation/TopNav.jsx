@@ -1,38 +1,42 @@
 import { CartIcon, HeartIcon, UserIcon } from "../../assets/icons";
+import { Link } from "react-router-dom";
 
 const TopNav = () => {
    return (
       <>
          <nav className="main-nav">
-            <a className="h5 brand" href="">
-               dopeYard
-            </a>
-
+            <Link to="/">
+               <span className="h5 brand">dopeYard</span>
+            </Link>
             <ul className="link-wrapper">
                <li>
-                  <a className="link" href="">
-                     Home
-                  </a>
+                  <Link to="/">
+                     <span className="link">Home</span>
+                  </Link>
                </li>
                <li>
-                  <a className="link" href="">
-                     Products
-                  </a>
+                  <Link to="/products">
+                     <span className="link">Products</span>
+                  </Link>
                </li>
                <li>
-                  <a className="icon-link" href="">
+                  <Link to="/login">
                      <UserIcon />
-                  </a>
+                  </Link>
                </li>
                <li>
-                  <a className="icon-link" href="">
-                     <HeartIcon />
-                  </a>
+                  <Link to="/wishlist">
+                     <div className="badge-container">
+                        <HeartIcon />
+                     </div>
+                  </Link>
                </li>
                <li>
-                  <a className="icon-link" href="">
-                     <CartIcon />
-                  </a>
+                  <Link to="/cart">
+                     <div className="badge-container">
+                        <CartIcon />
+                     </div>
+                  </Link>
                </li>
             </ul>
          </nav>
