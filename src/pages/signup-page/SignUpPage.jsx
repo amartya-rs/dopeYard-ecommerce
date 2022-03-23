@@ -1,4 +1,5 @@
 import { TopNav } from "../../components";
+import { Link } from "react-router-dom";
 import "./signup-page.css";
 
 const SignUpPage = () => {
@@ -50,7 +51,7 @@ const SignUpPage = () => {
             </button>
             <div className="form-footer">
                <p className="p-sm">Already a user?</p>
-               <a href="./signin.html">Sign In</a>
+               <Link to="/login">Login</Link>
             </div>
          </form>
       </div>
