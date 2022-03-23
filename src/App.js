@@ -1,4 +1,11 @@
-import { HomePage, LoginPage, ProductPage, SignUpPage } from "./pages/index";
+import {
+   HomePage,
+   LoginPage,
+   ProductPage,
+   SignUpPage,
+   CartPage,
+   WishlistPage,
+} from "./pages/index";
 
 const App = () => {
    return (
@@ -7,6 +14,8 @@ const App = () => {
          <ProductPage />
          <LoginPage />
          <SignUpPage />
+         <CartPage />
+         <WishlistPage />
       </div>
    );
 };
