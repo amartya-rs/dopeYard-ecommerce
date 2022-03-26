@@ -1,4 +1,4 @@
-import { CartIcon, HeartIcon } from "../../assets/icons";
+import { CartIcon, HeartIcon, Star } from "../../assets/icons";
 import { sold_out_img } from "../../assets/image";
 import "./product-card.css";
 
@@ -17,12 +17,16 @@ const ProductCard = ({ card }) => {
             <HeartIcon strokeColor="rgb(145, 55, 135)" />
          </button>
          <div className="card-content">
-            <h6 className="font-semibold">{card.title}</h6>
+            <h6>{card.title}</h6>
             <div className="price-wrapper">
-               <h5>{`₹ ${card.discountPrice}`}</h5>
-               <h6 className="strike-through">{`₹ ${card.price}`}</h6>
-               <h6 className="discount-text">{`${discount()}% off`}</h6>
+               <h5 className="font-semibold">{`₹ ${card.discountPrice}`}</h5>
+               <h6 className="strike-through font-semibold">{`₹ ${card.price}`}</h6>
+               <span className="discount-text font-semibold">{`(${discount()}% off)`}</span>
             </div>
+            <span className="rating-badge font-semibold">
+               <span>{card.rating}</span>
+               <Star />
+            </span>
             <button className="button button-icons primary">
                <CartIcon />
                <span>ADD TO CART</span>

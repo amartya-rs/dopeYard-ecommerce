@@ -1,0 +1,15 @@
+.number-badge {
+   border: 1px solid var(--WHITE);
+}
+
+.link-wrapper {
+   gap: 1.8rem;
+}
+
+.link-wrapper .link {
+   padding: 0;
+}
+
+.brand {
+   margin-right: 1rem;
+}

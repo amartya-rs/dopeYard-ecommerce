@@ -1,5 +1,6 @@
 import { CartIcon, HeartIcon, UserIcon } from "../../assets/icons";
 import { Link } from "react-router-dom";
+import "./top-nav.css";
 
 const TopNav = () => {
    return (
