@@ -57,6 +57,21 @@ const CartProvider = ({ children }) => {
       })();
    }, []);
 
+   //fetching all categories from server
+   useEffect(() => {
+      (async () => {
+         try {
+            const response = await axios.get(`/api/categories`);
+            dispatch({
+               type: "SAVE_CATEGORIES",
+               payload: response.data.categories,
+            });
+         } catch (error) {
+            console.log(error);
+         }
+      })();
+   }, []);
+
    //authorization for accessing private routes
    useEffect(() => {
       (async () => {
@@ -90,6 +105,11 @@ const CartProvider = ({ children }) => {
             return {
                ...state,
                wishlistData: payload,
+            };
+         case "SAVE_CATEGORIES":
+            return {
+               ...state,
+               allCategories: payload,
             };
          case "SORT_BY_PRICE":
             return {
@@ -136,6 +156,7 @@ const CartProvider = ({ children }) => {
       productData: [],
       wishlistData: [],
       cartData: [],
+      allCategories: [],
       sortBy: null,
       filterByRating: null,
       filterByCategory: {
