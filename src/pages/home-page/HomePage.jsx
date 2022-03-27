@@ -1,4 +1,10 @@
-import { Footer, HomePageCard, TopNav } from "../../components";
+import {
+   Footer,
+   HomePageCard,
+   TopNav,
+   CategoryCard,
+   Header,
+} from "../../components";
 import { useCart } from "../../context/cart-context";
 import { useNavigate } from "react-router-dom";
 import "./home-page.css";
@@ -17,20 +23,14 @@ const HomePage = () => {
       <div className="home-page">
          <TopNav />
          <main className="mb-6">
-            <header>
-               <div className="h1 brand">dopeYard</div>
-               <h3 className="font-semibold">
-                  The ultimate merchandise store for the hardcore hiphop fans.
-               </h3>
-               <div className="overlay">
-                  <button
-                     className="button primary mt-3"
-                     onClick={toProductPage}
-                  >
-                     <span className="h6 font-semibold">SHOP NOW</span>
-                  </button>
-               </div>
-            </header>
+            <Header />
+            <h2 className="mt-8">Categories</h2>
+            <hr className="my-1" />
+            <section className="featured mt-4 mb-2">
+               {state.allCategories.map((item) => (
+                  <CategoryCard key={item._id} card={item} />
+               ))}
+            </section>
             <h2 className="mt-8">Bestsellers</h2>
             <hr className="my-1" />
             <section className="featured mt-4 mb-8">

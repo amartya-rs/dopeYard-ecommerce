@@ -1,6 +1,6 @@
 import { useEffect, createContext, useContext, useReducer } from "react";
 import axios from "axios";
-
+import { cartReducer, initialState } from "../reducer/cart-reducer";
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
@@ -57,6 +57,21 @@ const CartProvider = ({ children }) => {
       })();
    }, []);
 
+   //fetching all categories from server
+   useEffect(() => {
+      (async () => {
+         try {
+            const response = await axios.get(`/api/categories`);
+            dispatch({
+               type: "SAVE_CATEGORIES",
+               payload: response.data.categories,
+            });
+         } catch (error) {
+            console.log(error);
+         }
+      })();
+   }, []);
+
    //authorization for accessing private routes
    useEffect(() => {
       (async () => {
@@ -72,80 +87,6 @@ const CartProvider = ({ children }) => {
          }
       })();
    }, []);
-
-   //reducer function
-   const cartReducer = (state, { type, payload }) => {
-      switch (type) {
-         case "SAVE_ALL_PRODUCTS":
-            return {
-               ...state,
-               productData: payload,
-            };
-         case "SAVE_CART":
-            return {
-               ...state,
-               cartData: payload,
-            };
-         case "SAVE_WISHLIST":
-            return {
-               ...state,
-               wishlistData: payload,
-            };
-         case "SORT_BY_PRICE":
-            return {
-               ...state,
-               sortBy: payload,
-            };
-         case "FILTER_BY_RATING":
-            return {
-               ...state,
-               filterByRating: payload,
-            };
-         case "FILTER_BY_CATEGORY":
-            return {
-               ...state,
-               filterByCategory: {
-                  ...state.filterByCategory,
-                  [payload]: !state.filterByCategory[payload],
-               },
-            };
-         case "TOGGLE_INVENTORY":
-            return {
-               ...state,
-               isStock: !state.isStock,
-            };
-         case "CLEAR_FILTERS":
-            return {
-               ...state,
-               sortBy: null,
-               filterByRating: null,
-               filterByCategory: {
-                  tshirt: false,
-                  hoodie: false,
-                  cap: false,
-                  longsleeve: false,
-               },
-               isStock: false,
-            };
-         default:
-            return state;
-      }
-   };
-
-   const initialState = {
-      productData: [],
-      wishlistData: [],
-      cartData: [],
-      sortBy: null,
-      filterByRating: null,
-      filterByCategory: {
-         tshirt: false,
-         hoodie: false,
-         cap: false,
-         longsleeve: false,
-      },
-      isStock: false,
-   };
 
    const [state, dispatch] = useReducer(cartReducer, initialState);
 
