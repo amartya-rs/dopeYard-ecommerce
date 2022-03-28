@@ -1,8 +1,15 @@
 import { CartIcon, HeartIcon, UserIcon } from "../../assets/icons";
 import { Link } from "react-router-dom";
+import { useCart } from "../../context/cart-context";
 import "./top-nav.css";
 
 const TopNav = () => {
+   const { state, dispatch } = useCart();
+
+   const cartCount = () => {
+      return state.cartData.reduce((sum, i) => sum + i.qty, 0);
+   };
+
    return (
       <>
          <nav className="main-nav">
@@ -28,6 +35,9 @@ const TopNav = () => {
                <li>
                   <Link to="/wishlist">
                      <div className="badge-container">
+                        <div className="number-badge">
+                           {state.wishlistData.length}
+                        </div>
                         <HeartIcon />
                      </div>
                   </Link>
@@ -35,6 +45,7 @@ const TopNav = () => {
                <li>
                   <Link to="/cart">
                      <div className="badge-container">
+                        <div className="number-badge">{cartCount()}</div>
                         <CartIcon />
                      </div>
                   </Link>
