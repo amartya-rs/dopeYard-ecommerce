@@ -3,10 +3,28 @@ import { useCart } from "../../context/cart-context";
 import "./cart-page.css";
 
 const CartPage = () => {
-   const { state, dispatch } = useCart();
+   const { state } = useCart();
 
    const cartCount = () => {
       return state.cartData.reduce((sum, i) => sum + i.qty, 0);
+   };
+
+   //calculating price details
+   const priceDetails = () => {
+      const deliveryCharge = 399;
+      const totalPrice = state.cartData.reduce(
+         (sum, i) => sum + i.price * i.qty,
+         0
+      );
+      const discountPerItem = () => {
+         const discount = state.cartData.map(
+            (item) => (item.price - item.discountPrice) * item.qty
+         );
+         return discount;
+      };
+      const totalDiscount = discountPerItem().reduce((sum, i) => sum + i, 0);
+      const grandTotal = totalPrice + deliveryCharge - totalDiscount;
+      return { totalPrice, grandTotal, totalDiscount };
    };
 
    return (
@@ -14,7 +32,7 @@ const CartPage = () => {
          <TopNav />
          <h4 className="my-3">My Cart - {cartCount()}</h4>
          <main>
-            {state.cartData.length !== 0 ? (
+            {cartCount() !== 0 ? (
                <>
                   <section className="cart-items">
                      {state.cartData.map((item) => (
@@ -28,11 +46,11 @@ const CartPage = () => {
                      <hr className="my-1" />
                      <div className="card-field">
                         <span>Price</span>
-                        <span>₹ 1999</span>
+                        <span>{`₹  ${priceDetails().totalPrice}`}</span>
                      </div>
                      <div className="card-field">
                         <span>Discount</span>
-                        <span>₹ 499</span>
+                        <span>{`- ₹  ${priceDetails().totalDiscount}`}</span>
                      </div>
                      <div className="card-field">
                         <span>Delivery Charges</span>
@@ -41,11 +59,13 @@ const CartPage = () => {
                      <hr className="my-1" />
                      <div className="card-field">
                         <h6>TOTAL</h6>
-                        <span>₹ 1500</span>
+                        <span>{`₹  ${priceDetails().grandTotal}`}</span>
                      </div>
                      <hr className="my-1" />
                      <div className="my-2">
-                        You will save <b>₹ 499</b> on this order
+                        You will save{" "}
+                        <b>{`₹ ${priceDetails().totalDiscount}`}</b> on this
+                        order
                      </div>
                      <button className="button primary mt-1">
                         PLACE ORDER
