@@ -9,9 +9,7 @@ export const Header = () => {
    return (
       <>
          <header>
-            <a className="h1 brand" href="/index.html">
-               dopeYard
-            </a>
+            <span className="h1 brand">dopeYard</span>
             <h3 className="font-semibold">
                The ultimate merchandise store for the hardcore hiphop fans.
             </h3>
