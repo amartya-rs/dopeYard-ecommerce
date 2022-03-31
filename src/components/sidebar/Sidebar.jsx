@@ -16,6 +16,29 @@ const Sidebar = () => {
             </button>
          </div>
          <hr />
+         <h6 className="mt-1 mb-2">
+            Price
+            <span className="show-price">{`₹ ${state.filterByPrice}`}</span>
+         </h6>
+         <ul>
+            <li>
+               <input
+                  id="pricing"
+                  type="range"
+                  min="899"
+                  max="3999"
+                  step="100"
+                  value={state.filterByPrice}
+                  onChange={(e) =>
+                     dispatch({
+                        type: "FILTER_BY_PRICE",
+                        payload: e.target.value,
+                     })
+                  }
+               ></input>
+            </li>
+         </ul>
+         <hr />
          <h6 className="my-1">Category</h6>
          <ul className="side-nav font-medium pl-1">
             <li>
@@ -148,7 +171,7 @@ const Sidebar = () => {
             </li>
          </ul>
          <hr />
-         <h6 className="my-1">Price</h6>
+         <h6 className="my-1">Sort by Price</h6>
          <ul className="side-nav font-medium pl-1">
             <li>
                <input
@@ -158,7 +181,7 @@ const Sidebar = () => {
                         payload: e.target.value,
                      })
                   }
-                  checked={state.sortBy === "HIGH_TO_LOW" ? true : false}
+                  checked={state.sortByPrice === "HIGH_TO_LOW" ? true : false}
                   value="HIGH_TO_LOW"
                   id="price-1"
                   name="price"
@@ -175,7 +198,7 @@ const Sidebar = () => {
                      })
                   }
                   value="LOW_TO_HIGH"
-                  checked={state.sortBy === "LOW_TO_HIGH" ? true : false}
+                  checked={state.sortByPrice === "LOW_TO_HIGH" ? true : false}
                   id="price-2"
                   name="price"
                   type="radio"

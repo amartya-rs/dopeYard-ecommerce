@@ -30,19 +30,24 @@ const filterByRating = (state) => {
       (item) => item.rating >= Number(state.filterByRating)
    );
 };
+const filterByPrice = (state) => {
+   return filterByRating(state).filter(
+      (item) => item.discountPrice <= state.filterByPrice
+   );
+};
 
 const sortedByPrice = (state) => {
-   if (state.sortBy === "HIGH_TO_LOW") {
-      return filterByRating(state).sort(
+   if (state.sortByPrice === "HIGH_TO_LOW") {
+      return filterByPrice(state).sort(
          (item1, item2) => item2.discountPrice - item1.discountPrice
       );
    }
-   if (state.sortBy === "LOW_TO_HIGH") {
-      return filterByRating(state).sort(
+   if (state.sortByPrice === "LOW_TO_HIGH") {
+      return filterByPrice(state).sort(
          (item1, item2) => item1.discountPrice - item2.discountPrice
       );
    }
-   return filterByRating(state);
+   return filterByPrice(state);
 };
 
 export { sortedByPrice };

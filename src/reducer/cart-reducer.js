@@ -24,7 +24,7 @@ const cartReducer = (state, { type, payload }) => {
       case "SORT_BY_PRICE":
          return {
             ...state,
-            sortBy: payload,
+            sortByPrice: payload,
          };
       case "FILTER_BY_RATING":
          return {
@@ -39,6 +39,11 @@ const cartReducer = (state, { type, payload }) => {
                [payload]: !state.filterByCategory[payload],
             },
          };
+      case "FILTER_BY_PRICE":
+         return {
+            ...state,
+            filterByPrice: payload,
+         };
       case "TOGGLE_INVENTORY":
          return {
             ...state,
@@ -47,8 +52,9 @@ const cartReducer = (state, { type, payload }) => {
       case "CLEAR_FILTERS":
          return {
             ...state,
-            sortBy: null,
+            sortByPrice: null,
             filterByRating: null,
+            filterByPrice: 3999,
             filterByCategory: {
                tshirt: false,
                hoodie: false,
@@ -68,8 +74,9 @@ const initialState = {
    wishlistData: [],
    cartData: [],
    allCategories: [],
-   sortBy: null,
+   sortByPrice: null,
    filterByRating: null,
+   filterByPrice: 3999,
    filterByCategory: {
       tshirt: false,
       hoodie: false,
