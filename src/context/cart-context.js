@@ -4,22 +4,6 @@ import { cartReducer, initialState } from "../reducer/cart-reducer";
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
-   //authorization for accessing private routes
-   useEffect(() => {
-      (async () => {
-         try {
-            const response = await axios.post(`/api/auth/login`, {
-               email: "adarshbalika@gmail.com",
-               password: "adarshBalika123",
-            });
-            // saving the encodedToken in the localStorage
-            localStorage.setItem("token", response.data.encodedToken);
-         } catch (error) {
-            console.log(error);
-         }
-      })();
-   }, []);
-
    //fetching all product data from server
    useEffect(() => {
       (async () => {
