@@ -5,6 +5,7 @@ import {
    SignUpPage,
    CartPage,
    WishlistPage,
+   Page404,
 } from "./pages/index";
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute, RestrictedRoute } from "./components/index";
@@ -25,6 +26,7 @@ const App = () => {
                <Route path="/login" element={<LoginPage />} />
                <Route path="/signup" element={<SignUpPage />} />
             </Route>
+            <Route path="*" element={<Page404 />} />
          </Routes>
       </div>
    );
