@@ -15,6 +15,7 @@ import category_cap from "./category_cap.webp";
 import category_hoodie from "./category_hoodie.webp";
 import category_tshirt from "./category_tshirt.webp";
 import category_lSleeve from "./category_lSleeve.webp";
+import page_not_found from "./page_not_found.jpg";
 
 export {
    em_hat_1,
@@ -34,4 +35,5 @@ export {
    category_tshirt,
    category_hoodie,
    category_lSleeve,
+   page_not_found,
 };
