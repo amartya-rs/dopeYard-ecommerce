@@ -28,7 +28,6 @@ const SignUpPage = () => {
                type: "SET_USER_CREDENTIALS",
                payload: response.data.createdUser,
             });
-            console.log(response.data);
             navigate("/products");
          } catch (error) {
             console.log(error);
