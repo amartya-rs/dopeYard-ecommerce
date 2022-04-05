@@ -4,6 +4,7 @@ aside hr {
 
 aside input[type="range"] {
    width: 100%;
+   cursor: pointer;
 }
 
 aside .show-price {
@@ -14,4 +15,8 @@ aside .show-price {
    font-weight: 600;
    border-radius: 5px;
    margin-left: 4.3rem;
+}
+
+aside label {
+   cursor: pointer;
 }
