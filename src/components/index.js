@@ -7,6 +7,8 @@ import { CartCard } from "./cart-card/CartCard";
 import { WishlistCard } from "./wishlist-card/WishlistCard";
 import { CategoryCard } from "./category-card/CategoryCard";
 import { Header } from "./header/Header";
+import { PrivateRoute } from "./auth/PrivateRoute";
+import { RestrictedRoute } from "./auth/RestrictedRoute";
 
 export {
    HomePageCard,
@@ -18,4 +20,6 @@ export {
    WishlistCard,
    CategoryCard,
    Header,
+   PrivateRoute,
+   RestrictedRoute,
 };
