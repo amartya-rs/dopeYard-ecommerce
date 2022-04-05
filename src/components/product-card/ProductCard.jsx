@@ -4,54 +4,60 @@ import { useCart } from "../../context/cart-context";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { discount } from "../../utils/discount";
+import { AuthProvider, useAuth } from "../../context/auth-context";
 import "./product-card.css";
 
 const ProductCard = ({ card }) => {
    const { state, dispatch } = useCart();
+   const { authState } = useAuth();
 
    //adding a product to cart
    const addToCart = async (card) => {
-      try {
-         const response = await axios.post(
-            "/api/user/cart",
-            {
-               product: card,
-            },
-            {
-               headers: {
-                  authorization: localStorage.getItem("token"),
+      if (authState.isLoggedIn) {
+         try {
+            const response = await axios.post(
+               "/api/user/cart",
+               {
+                  product: card,
                },
-            }
-         );
-         dispatch({
-            type: "SAVE_CART",
-            payload: response.data.cart,
-         });
-      } catch (error) {
-         console.log(error);
+               {
+                  headers: {
+                     authorization: localStorage.getItem("token"),
+                  },
+               }
+            );
+            dispatch({
+               type: "SAVE_CART",
+               payload: response.data.cart,
+            });
+         } catch (error) {
+            console.log(error);
+         }
       }
    };
 
    //adding a product to wishlist
    const addToWishlist = async (card) => {
-      try {
-         const response = await axios.post(
-            "/api/user/wishlist",
-            {
-               product: card,
-            },
-            {
-               headers: {
-                  authorization: localStorage.getItem("token"),
+      if (authState.isLoggedIn) {
+         try {
+            const response = await axios.post(
+               "/api/user/wishlist",
+               {
+                  product: card,
                },
-            }
-         );
-         dispatch({
-            type: "SAVE_WISHLIST",
-            payload: response.data.wishlist,
-         });
-      } catch (error) {
-         console.log(error);
+               {
+                  headers: {
+                     authorization: localStorage.getItem("token"),
+                  },
+               }
+            );
+            dispatch({
+               type: "SAVE_WISHLIST",
+               payload: response.data.wishlist,
+            });
+         } catch (error) {
+            console.log(error);
+         }
       }
    };
 

@@ -13,7 +13,6 @@ const CategoryCard = ({ card }) => {
          type: "FILTER_BY_CATEGORY",
          payload: card.categoryName.toLowerCase().replaceAll(" ", ""),
       });
-      console.log(card.categoryName);
    };
 
    return (
