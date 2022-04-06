@@ -1,15 +1,16 @@
 import { CartIcon, HeartIcon, Star } from "../../assets/icons";
 import { sold_out_img } from "../../assets/image";
 import { useCart } from "../../context/cart-context";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { discount } from "../../utils/discount";
-import { AuthProvider, useAuth } from "../../context/auth-context";
+import { useAuth } from "../../context/auth-context";
 import "./product-card.css";
 
 const ProductCard = ({ card }) => {
    const { state, dispatch } = useCart();
    const { authState } = useAuth();
+   const navigate = useNavigate();
 
    //adding a product to cart
    const addToCart = async (card) => {
@@ -33,6 +34,8 @@ const ProductCard = ({ card }) => {
          } catch (error) {
             console.log(error);
          }
+      } else {
+         navigate("/login");
       }
    };
 
@@ -58,6 +61,8 @@ const ProductCard = ({ card }) => {
          } catch (error) {
             console.log(error);
          }
+      } else {
+         navigate("/login");
       }
    };
 
