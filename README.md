@@ -6,9 +6,8 @@ Live link - [dopeYard](https://dopeyard-ecom.netlify.app/)
 
 ## Preview
 
-![](/assets/oxyelements-preview.gif)
+![](/preview.gif)
 
-## Get Started
 
 ## Features
 
