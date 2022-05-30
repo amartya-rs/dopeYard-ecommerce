@@ -1,67 +1,43 @@
 import { TopNav } from "../../components";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/auth-context";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signup } from "../../features/server-requests";
+import { useState } from "react";
 import "./signup-page.css";
 
 const SignUpPage = () => {
-   const navigate = useNavigate();
-   const { authState, authDispatch } = useAuth();
+   const dispatch = useDispatch();
+   const [error, setError] = useState("");
+   const [userDetails, setUserDetails] = useState({
+      name: "",
+      email: "",
+      password: "",
+   });
 
-   //signup handler
-   const signupHandler = async () => {
-      if (
-         authState.email !== "" &&
-         authState.password !== "" &&
-         authState.name !== ""
-      ) {
-         try {
-            const response = await axios.post(`/api/auth/signup`, {
-               name: authState.name,
-               email: authState.email,
-               password: authState.password,
-            });
-            // saving the encodedToken in the localStorage
-            localStorage.setItem("token", response.data.encodedToken);
-            authDispatch({
-               type: "SET_USER_CREDENTIALS",
-               payload: response.data.createdUser,
-            });
-            navigate("/products");
-         } catch (error) {
-            console.log(error);
-         }
-      } else {
-         authDispatch({
-            type: "SET_ERROR",
-            payload: "Enter your details",
-         });
-      }
+   const signupHandler = async (e) => {
+      e.preventDefault();
+      dispatch(
+         signup({
+            name: userDetails.name,
+            email: userDetails.email,
+            password: userDetails.password,
+         })
+      );
    };
 
    //validating user credentials
    const checkCredentials = ({ name, value }) => {
       const regex = /^\w+\@\w+\.\w{2,}$/;
       if (value === "") {
-         authDispatch({
-            type: "SET_ERROR",
-            payload: `Enter your ${name}`,
-         });
+         setError(`Enter your ${name}`);
          return "";
       } else {
-         authDispatch({
-            type: "SET_ERROR",
-            payload: "",
-         });
+         setError("");
          if (name === "name") {
             if (value.length > 4) {
                return value;
             } else {
-               authDispatch({
-                  type: "SET_ERROR",
-                  payload: "Name should be more then 5 character",
-               });
+               setError("Name should be more then 5 character");
                return value;
             }
          }
@@ -69,10 +45,7 @@ const SignUpPage = () => {
             if (regex.test(value)) {
                return value;
             } else {
-               authDispatch({
-                  type: "SET_ERROR",
-                  payload: "Enter a valid email",
-               });
+               setError("Enter a valid email");
                return value;
             }
          }
@@ -80,10 +53,7 @@ const SignUpPage = () => {
             if (value.length > 6) {
                return value;
             } else {
-               authDispatch({
-                  type: "SET_ERROR",
-                  payload: "Password should be more than 6 characters",
-               });
+               setError("Password should be more than 6 characters");
                return value;
             }
          }
@@ -93,7 +63,7 @@ const SignUpPage = () => {
    return (
       <div className="signup-page">
          <TopNav />
-         <form className="auth-form">
+         <form className="auth-form" onSubmit={signupHandler}>
             <div className="form-header">
                <h5>SIGNUP</h5>
                <p className="p-sm">Please fill in your information below.</p>
@@ -105,16 +75,17 @@ const SignUpPage = () => {
                   </label>
                   <input
                      onChange={(e) =>
-                        authDispatch({
-                           type: "SET_NAME",
-                           payload: checkCredentials(e.target),
+                        setUserDetails({
+                           ...userDetails,
+                           name: checkCredentials(e.target),
                         })
                      }
                      name="name"
                      className="text-input"
                      type="text"
                      placeholder="Kanye West"
-                     value={authState.name}
+                     value={userDetails.name}
+                     required
                   />
                </div>
                <div>
@@ -123,16 +94,17 @@ const SignUpPage = () => {
                   </label>
                   <input
                      onChange={(e) =>
-                        authDispatch({
-                           type: "SET_EMAIL",
-                           payload: checkCredentials(e.target),
+                        setUserDetails({
+                           ...userDetails,
+                           email: checkCredentials(e.target),
                         })
                      }
                      className="text-input"
                      type="email"
                      name="email"
                      placeholder="kanye@xyz.com"
-                     value={authState.email}
+                     value={userDetails.email}
+                     required
                   />
                </div>
                <div>
@@ -141,24 +113,25 @@ const SignUpPage = () => {
                   </label>
                   <input
                      onChange={(e) =>
-                        authDispatch({
-                           type: "SET_PW",
-                           payload: checkCredentials(e.target),
+                        setUserDetails({
+                           ...userDetails,
+                           password: checkCredentials(e.target),
                         })
                      }
                      name="password"
                      className="text-input"
                      type="password"
                      placeholder="***************"
-                     value={authState.password}
+                     value={userDetails.password}
+                     required
                   />
                </div>
             </div>
-            <span className="auth-error">{authState.error}</span>
+            <span className="auth-error">{error}</span>
             <button
                className="button primary"
-               type="button"
-               onClick={signupHandler}
+               type="submit"
+               disabled={error ? true : false}
             >
                SIGN UP
             </button>

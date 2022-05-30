@@ -4,17 +4,17 @@ import { useCart } from "../../context/cart-context";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { discount } from "../../utils/discount";
-import { useAuth } from "../../context/auth-context";
+import { useDispatch, useSelector } from "react-redux";
 import "./product-card.css";
 
 const ProductCard = ({ card }) => {
    const { state, dispatch } = useCart();
-   const { authState } = useAuth();
+   const { isLoggedIn } = useSelector((state) => state.auth);
    const navigate = useNavigate();
 
    //adding a product to cart
    const addToCart = async (card) => {
-      if (authState.isLoggedIn) {
+      if (isLoggedIn) {
          try {
             const response = await axios.post(
                "/api/user/cart",
@@ -41,7 +41,7 @@ const ProductCard = ({ card }) => {
 
    //adding a product to wishlist
    const addToWishlist = async (card) => {
-      if (authState.isLoggedIn) {
+      if (isLoggedIn) {
          try {
             const response = await axios.post(
                "/api/user/wishlist",
