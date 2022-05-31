@@ -1,23 +1,16 @@
 import { CartCard, Footer, TopNav } from "../../components";
-import { useCart } from "../../context/cart-context";
+import { useSelector } from "react-redux";
+import { cartCount } from "../../utils/cartCount";
 import "./cart-page.css";
 
 const CartPage = () => {
-   const { state } = useCart();
+   const { cart } = useSelector((state) => state.cart);
 
-   const cartCount = () => {
-      return state.cartData.reduce((sum, i) => sum + i.qty, 0);
-   };
-
-   //calculating price details
    const priceDetails = () => {
       const deliveryCharge = 399;
-      const totalPrice = state.cartData.reduce(
-         (sum, i) => sum + i.price * i.qty,
-         0
-      );
+      const totalPrice = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
       const discountPerItem = () => {
-         const discount = state.cartData.map(
+         const discount = cart.map(
             (item) => (item.price - item.discountPrice) * item.qty
          );
          return discount;
@@ -30,12 +23,12 @@ const CartPage = () => {
    return (
       <div className="cart-page">
          <TopNav />
-         <h4 className="my-3">My Cart - {cartCount()}</h4>
+         <h4 className="my-3">My Cart - {cartCount(cart)}</h4>
          <main>
-            {cartCount() !== 0 ? (
+            {cartCount(cart) !== 0 ? (
                <>
                   <section className="cart-items">
-                     {state.cartData.map((item) => (
+                     {cart?.map((item) => (
                         <CartCard key={item._id} card={item} />
                      ))}
                   </section>

@@ -59,3 +59,66 @@ export const loadProductCategories = createAsyncThunk(
       }
    }
 );
+
+/***** cart *****/
+export const addToCart = createAsyncThunk(
+   "/cart/addToCart",
+   async (card, thunkAPI) => {
+      try {
+         const response = await axios.post(
+            "/api/user/cart",
+            {
+               product: card,
+            },
+            {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            }
+         );
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const removeFromCart = createAsyncThunk(
+   "/cart/removeFromCart",
+   async (card, thunkAPI) => {
+      try {
+         const response = await axios.delete(`/api/user/cart/${card._id}`, {
+            headers: {
+               authorization: localStorage.getItem("token"),
+            },
+         });
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const updateProductQuantity = createAsyncThunk(
+   "/cart/updateProductQuantity",
+   async ({ productId, value }, thunkAPI) => {
+      try {
+         const response = await axios.post(
+            `/api/user/cart/${productId}`,
+            {
+               action: {
+                  type: value === "INCREMENT" ? "increment" : "decrement",
+               },
+            },
+            {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            }
+         );
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);

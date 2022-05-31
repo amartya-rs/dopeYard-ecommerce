@@ -1,43 +1,18 @@
 import { CartIcon, HeartIcon, Star } from "../../assets/icons";
 import { sold_out_img } from "../../assets/image";
-import { useCart } from "../../context/cart-context";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { discount } from "../../utils/discount";
 import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../features/server-requests";
+import { isPresentInData } from "../../utils/isPresentInData";
 import "./product-card.css";
 
 const ProductCard = ({ card }) => {
-   const { state, dispatch } = useCart();
-   const { isLoggedIn } = useSelector((state) => state.auth);
    const navigate = useNavigate();
-
-   //adding a product to cart
-   const addToCart = async (card) => {
-      if (isLoggedIn) {
-         try {
-            const response = await axios.post(
-               "/api/user/cart",
-               {
-                  product: card,
-               },
-               {
-                  headers: {
-                     authorization: localStorage.getItem("token"),
-                  },
-               }
-            );
-            dispatch({
-               type: "SAVE_CART",
-               payload: response.data.cart,
-            });
-         } catch (error) {
-            console.log(error);
-         }
-      } else {
-         navigate("/login");
-      }
-   };
+   const { isLoggedIn } = useSelector((state) => state.auth);
+   const { cart } = useSelector((state) => state.cart);
+   const dispatch = useDispatch();
 
    //adding a product to wishlist
    const addToWishlist = async (card) => {
@@ -86,25 +61,26 @@ const ProductCard = ({ card }) => {
    return (
       <div className="card vertical">
          <img className="card-img" src={card.imgUrl} />
-         {state.wishlistData.findIndex((item) => item._id === card._id) !==
-         -1 ? (
-            <button
-               onClick={() => removeFromWishlist(card)}
-               className="corner-button"
-            >
-               <HeartIcon
-                  strokeColor="rgb(145, 55, 135)"
-                  fillColor="rgb(145, 55, 135)"
-               />
-            </button>
-         ) : (
-            <button
-               onClick={() => addToWishlist(card)}
-               className="corner-button"
-            >
-               <HeartIcon strokeColor="rgb(145, 55, 135)" />
-            </button>
-         )}
+         {
+            /*wishlistData.findIndex((item) => item._id === card._id) !== -1 ?*/ false ? (
+               <button
+                  onClick={() => removeFromWishlist(card)}
+                  className="corner-button"
+               >
+                  <HeartIcon
+                     strokeColor="rgb(145, 55, 135)"
+                     fillColor="rgb(145, 55, 135)"
+                  />
+               </button>
+            ) : (
+               <button
+                  onClick={() => addToWishlist(card)}
+                  className="corner-button"
+               >
+                  <HeartIcon strokeColor="rgb(145, 55, 135)" />
+               </button>
+            )
+         }
          <div className="card-content">
             <h6>{card.title}</h6>
             <div className="price-wrapper">
@@ -118,8 +94,7 @@ const ProductCard = ({ card }) => {
                <span>{card.rating}</span>
                <Star />
             </span>
-            {state.cartData.findIndex((item) => item._id === card._id) !==
-            -1 ? (
+            {isPresentInData(cart, card) ? (
                <Link to="/cart">
                   <button className="button secondary">
                      <span>GO TO CART</span>
@@ -127,7 +102,9 @@ const ProductCard = ({ card }) => {
                </Link>
             ) : (
                <button
-                  onClick={() => addToCart(card)}
+                  onClick={() =>
+                     isLoggedIn ? dispatch(addToCart(card)) : navigate("/login")
+                  }
                   className="button button-icons primary"
                >
                   <CartIcon />

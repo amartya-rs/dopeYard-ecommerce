@@ -3,16 +3,14 @@ import { Link } from "react-router-dom";
 import { useCart } from "../../context/cart-context";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
+import { cartCount } from "../../utils/cartCount";
 import "./top-nav.css";
 
 const TopNav = () => {
    const { state } = useCart();
    const { isLoggedIn } = useSelector((state) => state.auth);
+   const { cart } = useSelector((state) => state.cart);
    const dispatch = useDispatch();
-
-   const cartCount = () => {
-      return state.cartData.reduce((sum, i) => sum + i.qty, 0);
-   };
 
    return (
       <>
@@ -59,7 +57,7 @@ const TopNav = () => {
                   <Link to="/cart">
                      <div className="badge-container">
                         {isLoggedIn ? (
-                           <div className="number-badge">{cartCount()}</div>
+                           <div className="number-badge">{cartCount(cart)}</div>
                         ) : (
                            ""
                         )}
