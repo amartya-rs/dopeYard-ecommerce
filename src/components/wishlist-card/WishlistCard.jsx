@@ -1,70 +1,19 @@
 import { CrossIcon, Star } from "../../assets/icons";
-import { useCart } from "../../context/cart-context";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, removeFromWishlist } from "../../features/server-requests";
 import { discount } from "../../utils/discount";
+import { isPresentInData } from "../../utils/isPresentInData";
 
 const WishlistCard = ({ card }) => {
-   const { state, dispatch } = useCart();
-
-   //removing a product from wishlist
-   const removeFromWishlist = async (card) => {
-      try {
-         const response = await axios.delete(`/api/user/wishlist/${card._id}`, {
-            headers: {
-               authorization: localStorage.getItem("token"),
-            },
-         });
-         dispatch({
-            type: "SAVE_WISHLIST",
-            payload: response.data.wishlist,
-         });
-      } catch (error) {
-         console.log(error);
-      }
-   };
-
-   //moving a product to cart
-   const moveToCart = async (card) => {
-      if (state.cartData.findIndex((item) => item._id === card._id) === -1) {
-         try {
-            //adding an item to the cart
-            const response = await axios.post(
-               "/api/user/cart",
-               {
-                  product: card,
-               },
-               {
-                  headers: {
-                     authorization: localStorage.getItem("token"),
-                  },
-               }
-            );
-            dispatch({
-               type: "SAVE_CART",
-               payload: response.data.cart,
-            });
-
-            //removing the same item from the wishlist
-            const res = await axios.delete(`/api/user/wishlist/${card._id}`, {
-               headers: {
-                  authorization: localStorage.getItem("token"),
-               },
-            });
-            dispatch({
-               type: "SAVE_WISHLIST",
-               payload: res.data.wishlist,
-            });
-         } catch (error) {
-            console.log(error);
-         }
-      }
-   };
+   const dispatch = useDispatch();
+   const { cart } = useSelector((state) => state.cart);
 
    return (
       <div className="card vertical">
          <img className="card-img" src={card.imgUrl} />
          <button
-            onClick={() => removeFromWishlist(card)}
+            onClick={() => dispatch(removeFromWishlist(card))}
             className="corner-button"
          >
             <CrossIcon />
@@ -82,9 +31,22 @@ const WishlistCard = ({ card }) => {
                <span>{card.rating}</span>
                <Star />
             </span>
-            <button onClick={() => moveToCart(card)} className="button primary">
-               MOVE TO CART
-            </button>
+            {isPresentInData(cart, card) ? (
+               <Link to="/cart">
+                  <button className="button secondary">
+                     <span>GO TO CART</span>
+                  </button>
+               </Link>
+            ) : (
+               <button
+                  onClick={() => {
+                     dispatch(addToCart(card));
+                  }}
+                  className="button primary"
+               >
+                  MOVE TO CART
+               </button>
+            )}
          </div>
       </div>
    );

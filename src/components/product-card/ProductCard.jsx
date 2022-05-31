@@ -1,10 +1,13 @@
 import { CartIcon, HeartIcon, Star } from "../../assets/icons";
 import { sold_out_img } from "../../assets/image";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { discount } from "../../utils/discount";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../features/server-requests";
+import {
+   addToCart,
+   addToWishlist,
+   removeFromWishlist,
+} from "../../features/server-requests";
 import { isPresentInData } from "../../utils/isPresentInData";
 import "./product-card.css";
 
@@ -12,75 +15,34 @@ const ProductCard = ({ card }) => {
    const navigate = useNavigate();
    const { isLoggedIn } = useSelector((state) => state.auth);
    const { cart } = useSelector((state) => state.cart);
+   const { wishlist } = useSelector((state) => state.wishlist);
    const dispatch = useDispatch();
-
-   //adding a product to wishlist
-   const addToWishlist = async (card) => {
-      if (isLoggedIn) {
-         try {
-            const response = await axios.post(
-               "/api/user/wishlist",
-               {
-                  product: card,
-               },
-               {
-                  headers: {
-                     authorization: localStorage.getItem("token"),
-                  },
-               }
-            );
-            dispatch({
-               type: "SAVE_WISHLIST",
-               payload: response.data.wishlist,
-            });
-         } catch (error) {
-            console.log(error);
-         }
-      } else {
-         navigate("/login");
-      }
-   };
-
-   //removing a product from wishlist
-   const removeFromWishlist = async (card) => {
-      try {
-         const response = await axios.delete(`/api/user/wishlist/${card._id}`, {
-            headers: {
-               authorization: localStorage.getItem("token"),
-            },
-         });
-         dispatch({
-            type: "SAVE_WISHLIST",
-            payload: response.data.wishlist,
-         });
-      } catch (error) {
-         console.log(error);
-      }
-   };
 
    return (
       <div className="card vertical">
          <img className="card-img" src={card.imgUrl} />
-         {
-            /*wishlistData.findIndex((item) => item._id === card._id) !== -1 ?*/ false ? (
-               <button
-                  onClick={() => removeFromWishlist(card)}
-                  className="corner-button"
-               >
-                  <HeartIcon
-                     strokeColor="rgb(145, 55, 135)"
-                     fillColor="rgb(145, 55, 135)"
-                  />
-               </button>
-            ) : (
-               <button
-                  onClick={() => addToWishlist(card)}
-                  className="corner-button"
-               >
-                  <HeartIcon strokeColor="rgb(145, 55, 135)" />
-               </button>
-            )
-         }
+         {isLoggedIn && isPresentInData(wishlist, card) ? (
+            <button
+               onClick={() => dispatch(removeFromWishlist(card))}
+               className="corner-button"
+            >
+               <HeartIcon
+                  strokeColor="rgb(145, 55, 135)"
+                  fillColor="rgb(145, 55, 135)"
+               />
+            </button>
+         ) : (
+            <button
+               onClick={() =>
+                  isLoggedIn
+                     ? dispatch(addToWishlist(card))
+                     : navigate("/login")
+               }
+               className="corner-button"
+            >
+               <HeartIcon strokeColor="rgb(145, 55, 135)" />
+            </button>
+         )}
          <div className="card-content">
             <h6>{card.title}</h6>
             <div className="price-wrapper">
@@ -94,7 +56,7 @@ const ProductCard = ({ card }) => {
                <span>{card.rating}</span>
                <Star />
             </span>
-            {isPresentInData(cart, card) ? (
+            {isLoggedIn && isPresentInData(cart, card) ? (
                <Link to="/cart">
                   <button className="button secondary">
                      <span>GO TO CART</span>

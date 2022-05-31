@@ -1,15 +1,14 @@
 import { CartIcon, HeartIcon, UserIcon, LogoutIcon } from "../../assets/icons";
 import { Link } from "react-router-dom";
-import { useCart } from "../../context/cart-context";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 import { cartCount } from "../../utils/cartCount";
 import "./top-nav.css";
 
 const TopNav = () => {
-   const { state } = useCart();
    const { isLoggedIn } = useSelector((state) => state.auth);
    const { cart } = useSelector((state) => state.cart);
+   const { wishlist } = useSelector((state) => state.wishlist);
    const dispatch = useDispatch();
 
    return (
@@ -44,7 +43,7 @@ const TopNav = () => {
                      <div className="badge-container">
                         {isLoggedIn ? (
                            <div className="number-badge">
-                              {state.wishlistData.length}
+                              {wishlist?.length}
                            </div>
                         ) : (
                            ""

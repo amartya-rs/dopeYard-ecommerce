@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-/***** user authentication ****/
+/********** user authentication *********/
 export const login = createAsyncThunk(
    "/auth/login",
    async ({ email, password }, thunkAPI) => {
@@ -33,7 +33,7 @@ export const signup = createAsyncThunk(
    }
 );
 
-/***** product data *****/
+/********** product data **********/
 export const loadProductData = createAsyncThunk(
    "/product/loadProductData",
    async (thunkAPI) => {
@@ -60,7 +60,7 @@ export const loadProductCategories = createAsyncThunk(
    }
 );
 
-/***** cart *****/
+/********** cart **********/
 export const addToCart = createAsyncThunk(
    "/cart/addToCart",
    async (card, thunkAPI) => {
@@ -116,6 +116,45 @@ export const updateProductQuantity = createAsyncThunk(
                },
             }
          );
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+/********** wishlist **********/
+export const addToWishlist = createAsyncThunk(
+   "/wishlist/addToWishlist",
+   async (card, thunkAPI) => {
+      try {
+         const response = await axios.post(
+            "/api/user/wishlist",
+            {
+               product: card,
+            },
+            {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            }
+         );
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const removeFromWishlist = createAsyncThunk(
+   "/wishlist/removeFromWishlist",
+   async (card, thunkAPI) => {
+      try {
+         const response = await axios.delete(`/api/user/wishlist/${card._id}`, {
+            headers: {
+               authorization: localStorage.getItem("token"),
+            },
+         });
          return response.data;
       } catch (error) {
          return thunkAPI.rejectWithValue(error.response.data);
