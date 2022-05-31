@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, signup } from "../server-requests";
+import { toastSuccess, toastError } from "../../utils/useToast";
 
 const initialState = {
    isLoggedIn: false,
@@ -22,6 +23,7 @@ export const authSlice = createSlice({
          state.user = "";
          localStorage.removeItem("token");
          localStorage.removeItem("user");
+         toastSuccess("Logged out successfully");
       },
    },
    extraReducers: {
@@ -32,10 +34,11 @@ export const authSlice = createSlice({
          state.user = { name, email };
          localStorage.setItem("token", action?.payload?.encodedToken);
          localStorage.setItem("user", JSON.stringify({ name, email }));
+         toastSuccess("Logged in successfully");
       },
       [login.rejected]: (state, action) => {
          state.status = "rejected";
-         console.log(action.payload.errors[0]);
+         toastError(action.payload?.errors[0]);
       },
       [signup.fulfilled]: (state, action) => {
          const { name, email } = action?.payload?.createdUser;
@@ -44,10 +47,11 @@ export const authSlice = createSlice({
          state.user = { name, email };
          localStorage.setItem("token", action?.payload?.encodedToken);
          localStorage.setItem("user", JSON.stringify({ name, email }));
+         toastSuccess("Signed up successfully");
       },
       [signup.rejected]: (state, action) => {
          state.status = "rejected";
-         console.log(action.payload.errors[0]);
+         toastError(action.payload?.errors[0]);
       },
    },
 });

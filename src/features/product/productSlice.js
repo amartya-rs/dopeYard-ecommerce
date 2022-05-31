@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadProductCategories, loadProductData } from "../server-requests";
+import { toastError } from "../../utils/useToast";
 
 const initialState = {
    products: "",
@@ -53,17 +54,17 @@ export const productSlice = createSlice({
          state.status = "fulfilled";
          state.products = action.payload.products;
       },
-      [loadProductData.rejected]: (state, action) => {
+      [loadProductData.rejected]: (state) => {
          state.status = "rejected";
-         console.log(action.payload.errors[0]);
+         toastError("Some error occured. Try refreshing.");
       },
       [loadProductCategories.fulfilled]: (state, action) => {
          state.status = "fulfilled";
          state.categories = action.payload.categories;
       },
-      [loadProductCategories.rejected]: (state, action) => {
+      [loadProductCategories.rejected]: (state) => {
          state.status = "rejected";
-         console.log(action.payload.errors[0]);
+         toastError("Some error occured. Try refreshing.");
       },
    },
 });

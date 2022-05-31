@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addToWishlist, removeFromWishlist } from "../server-requests";
+import { toastSuccess, toastError, toastInfo } from "../../utils/useToast";
 
 const initialState = {
    wishlist: [],
@@ -13,18 +14,20 @@ export const wishlistSlice = createSlice({
       [addToWishlist.fulfilled]: (state, action) => {
          state.status = "fulfilled";
          state.wishlist = action.payload.wishlist;
+         toastSuccess("Added to wishlist");
       },
       [addToWishlist.rejected]: (state, action) => {
          state.status = "rejected";
-         console.log(action.payload.errors[0]);
+         toastError(action.payload?.errors[0]);
       },
       [removeFromWishlist.fulfilled]: (state, action) => {
          state.status = "fulfilled";
          state.wishlist = action.payload.wishlist;
+         toastInfo("Removed from wishlist");
       },
       [removeFromWishlist.rejected]: (state, action) => {
          state.status = "rejected";
-         console.log(action.payload.errors[0]);
+         toastError(action.payload?.errors[0]);
       },
    },
 });

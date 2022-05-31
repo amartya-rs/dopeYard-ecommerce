@@ -10,6 +10,8 @@ import {
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute, RestrictedRoute } from "./components/index";
 import { useCheckLoginStatus } from "./utils/useCheckLoginStatus";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
    useCheckLoginStatus();
@@ -32,6 +34,8 @@ const App = () => {
             </Route>
             <Route path="*" element={<Page404 />} />
          </Routes>
+
+         <ToastContainer />
       </div>
    );
 };
