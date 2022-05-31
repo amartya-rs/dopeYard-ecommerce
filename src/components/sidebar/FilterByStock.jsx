@@ -1,7 +1,9 @@
-import { useCart } from "../../context/cart-context";
+import { useDispatch, useSelector } from "react-redux";
+import { filterByStock } from "../../features/product/productSlice";
 
 export const FilterByStock = () => {
-   const { state, dispatch } = useCart();
+   const dispatch = useDispatch();
+   const { inStock } = useSelector((state) => state.product);
 
    return (
       <>
@@ -9,12 +11,8 @@ export const FilterByStock = () => {
          <ul>
             <li>
                <input
-                  onChange={(e) =>
-                     dispatch({
-                        type: "TOGGLE_INVENTORY",
-                     })
-                  }
-                  checked={state.isStock}
+                  onChange={(e) => dispatch(filterByStock())}
+                  checked={inStock}
                   id="stock"
                   type="checkbox"
                />

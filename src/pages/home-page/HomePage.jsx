@@ -1,3 +1,4 @@
+import "./home-page.css";
 import {
    Footer,
    HomePageCard,
@@ -5,18 +6,28 @@ import {
    CategoryCard,
    Header,
 } from "../../components";
-import { useCart } from "../../context/cart-context";
 import { useNavigate } from "react-router-dom";
-import "./home-page.css";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+   loadProductData,
+   loadProductCategories,
+} from "../../features/server-requests";
+import { filterByCategory } from "../../features/product/productSlice";
 
 const HomePage = () => {
-   const { state } = useCart();
    const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const { products, categories } = useSelector((state) => state.product);
 
-   //will redirect to products page
-   const toProductPage = () => {
+   useEffect(() => {
+      dispatch(loadProductData());
+      dispatch(loadProductCategories());
+   }, []);
+
+   const toProductPage = (item) => {
       navigate("/products");
-      window.scroll(0, 0);
+      dispatch(filterByCategory(item.toLowerCase().replaceAll(" ", "")));
    };
 
    return (
@@ -27,18 +38,28 @@ const HomePage = () => {
             <h2 className="mt-8">Categories</h2>
             <hr className="my-1" />
             <section className="featured mt-4 mb-2">
-               {state.allCategories.map((item) => (
-                  <CategoryCard key={item._id} card={item} />
-               ))}
+               {categories?.length !== 0 &&
+                  categories?.map((item) => (
+                     <CategoryCard
+                        key={item._id}
+                        card={item}
+                        toProductPage={toProductPage}
+                     />
+                  ))}
             </section>
             <h2 className="mt-8">Bestsellers</h2>
             <hr className="my-1" />
             <section className="featured mt-4 mb-8">
-               {state.productData
-                  .filter((item) => item.rating >= 4.5 && item.inStock)
-                  .map((item) => (
-                     <HomePageCard key={item._id} card={item} />
-                  ))}
+               {products?.length !== 0 &&
+                  products
+                     ?.filter((item) => item.rating >= 4.5 && item.inStock)
+                     ?.map((item) => (
+                        <HomePageCard
+                           key={item._id}
+                           card={item}
+                           toProductPage={toProductPage}
+                        />
+                     ))}
             </section>
          </main>
          <Footer />

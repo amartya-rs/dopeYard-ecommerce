@@ -1,7 +1,7 @@
 const filterByStock = (state) => {
-   return state.isStock
-      ? state.productData
-      : state.productData.filter((item) => item.inStock === true);
+   return state.inStock
+      ? state.products
+      : state.products.filter((item) => item.inStock === true);
 };
 
 const filterByCategory = (state) => {

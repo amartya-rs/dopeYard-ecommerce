@@ -32,3 +32,30 @@ export const signup = createAsyncThunk(
       }
    }
 );
+
+/***** product data *****/
+export const loadProductData = createAsyncThunk(
+   "/product/loadProductData",
+   async (thunkAPI) => {
+      try {
+         const response = await axios.get(`/api/products`);
+         return response.data;
+      } catch (error) {
+         console.error(error);
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const loadProductCategories = createAsyncThunk(
+   "/product/loadProductCategories",
+   async (thunkAPI) => {
+      try {
+         const response = await axios.get(`/api/categories`);
+         return response.data;
+      } catch (error) {
+         console.error(error);
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
