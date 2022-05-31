@@ -47,6 +47,7 @@ const CartCard = ({ card }) => {
                   readOnly
                />
                <button
+                  disabled={card.qty === 1 ? true : false}
                   value="DECREMENT"
                   onClick={(e) =>
                      dispatch(
