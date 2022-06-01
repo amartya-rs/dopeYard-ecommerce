@@ -34,3 +34,7 @@
 .login-page .auth-form {
    gap: 1.25rem;
 }
+
+html {
+   scroll-behavior: smooth;
+}

@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../../context/auth-context";
+import { useSelector } from "react-redux";
 
 const RestrictedRoute = () => {
-   const { authState } = useAuth();
+   const { isLoggedIn } = useSelector((state) => state.auth);
 
-   return authState.isLoggedIn ? <Navigate to="/products" /> : <Outlet />;
+   return isLoggedIn ? <Navigate to="/products" replace /> : <Outlet />;
 };
 
 export { RestrictedRoute };

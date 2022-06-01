@@ -1,95 +1,29 @@
 import { CartIcon, HeartIcon, Star } from "../../assets/icons";
 import { sold_out_img } from "../../assets/image";
-import { useCart } from "../../context/cart-context";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { discount } from "../../utils/discount";
-import { useAuth } from "../../context/auth-context";
+import { useDispatch, useSelector } from "react-redux";
+import {
+   addToCart,
+   addToWishlist,
+   removeFromWishlist,
+} from "../../features/server-requests";
+import { isPresentInData } from "../../utils/isPresentInData";
 import "./product-card.css";
 
 const ProductCard = ({ card }) => {
-   const { state, dispatch } = useCart();
-   const { authState } = useAuth();
    const navigate = useNavigate();
-
-   //adding a product to cart
-   const addToCart = async (card) => {
-      if (authState.isLoggedIn) {
-         try {
-            const response = await axios.post(
-               "/api/user/cart",
-               {
-                  product: card,
-               },
-               {
-                  headers: {
-                     authorization: localStorage.getItem("token"),
-                  },
-               }
-            );
-            dispatch({
-               type: "SAVE_CART",
-               payload: response.data.cart,
-            });
-         } catch (error) {
-            console.log(error);
-         }
-      } else {
-         navigate("/login");
-      }
-   };
-
-   //adding a product to wishlist
-   const addToWishlist = async (card) => {
-      if (authState.isLoggedIn) {
-         try {
-            const response = await axios.post(
-               "/api/user/wishlist",
-               {
-                  product: card,
-               },
-               {
-                  headers: {
-                     authorization: localStorage.getItem("token"),
-                  },
-               }
-            );
-            dispatch({
-               type: "SAVE_WISHLIST",
-               payload: response.data.wishlist,
-            });
-         } catch (error) {
-            console.log(error);
-         }
-      } else {
-         navigate("/login");
-      }
-   };
-
-   //removing a product from wishlist
-   const removeFromWishlist = async (card) => {
-      try {
-         const response = await axios.delete(`/api/user/wishlist/${card._id}`, {
-            headers: {
-               authorization: localStorage.getItem("token"),
-            },
-         });
-         dispatch({
-            type: "SAVE_WISHLIST",
-            payload: response.data.wishlist,
-         });
-      } catch (error) {
-         console.log(error);
-      }
-   };
+   const { isLoggedIn } = useSelector((state) => state.auth);
+   const { cart } = useSelector((state) => state.cart);
+   const { wishlist } = useSelector((state) => state.wishlist);
+   const dispatch = useDispatch();
 
    return (
       <div className="card vertical">
          <img className="card-img" src={card.imgUrl} />
-         {state.wishlistData.findIndex((item) => item._id === card._id) !==
-         -1 ? (
+         {isLoggedIn && isPresentInData(wishlist, card) ? (
             <button
-               onClick={() => removeFromWishlist(card)}
+               onClick={() => dispatch(removeFromWishlist(card))}
                className="corner-button"
             >
                <HeartIcon
@@ -99,7 +33,11 @@ const ProductCard = ({ card }) => {
             </button>
          ) : (
             <button
-               onClick={() => addToWishlist(card)}
+               onClick={() =>
+                  isLoggedIn
+                     ? dispatch(addToWishlist(card))
+                     : navigate("/login")
+               }
                className="corner-button"
             >
                <HeartIcon strokeColor="rgb(145, 55, 135)" />
@@ -118,8 +56,7 @@ const ProductCard = ({ card }) => {
                <span>{card.rating}</span>
                <Star />
             </span>
-            {state.cartData.findIndex((item) => item._id === card._id) !==
-            -1 ? (
+            {isLoggedIn && isPresentInData(cart, card) ? (
                <Link to="/cart">
                   <button className="button secondary">
                      <span>GO TO CART</span>
@@ -127,7 +64,9 @@ const ProductCard = ({ card }) => {
                </Link>
             ) : (
                <button
-                  onClick={() => addToCart(card)}
+                  onClick={() =>
+                     isLoggedIn ? dispatch(addToCart(card)) : navigate("/login")
+                  }
                   className="button button-icons primary"
                >
                   <CartIcon />

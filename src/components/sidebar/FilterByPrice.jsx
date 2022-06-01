@@ -1,13 +1,17 @@
-import { useCart } from "../../context/cart-context";
+import { useDispatch, useSelector } from "react-redux";
+import { filterByPrice } from "../../features/product/productSlice";
 
 export const FilterByPrice = () => {
-   const { state, dispatch } = useCart();
+   const dispatch = useDispatch();
+   const { filterByPrice: filteredByPrice } = useSelector(
+      (state) => state.product
+   );
 
    return (
       <>
          <h6 className="mt-1 mb-2">
             Price
-            <span className="show-price">{`₹ ${state.filterByPrice}`}</span>
+            <span className="show-price">{`₹ ${filteredByPrice}`}</span>
          </h6>
          <ul>
             <li>
@@ -17,13 +21,8 @@ export const FilterByPrice = () => {
                   min="899"
                   max="3999"
                   step="100"
-                  value={state.filterByPrice}
-                  onChange={(e) =>
-                     dispatch({
-                        type: "FILTER_BY_PRICE",
-                        payload: e.target.value,
-                     })
-                  }
+                  value={filteredByPrice}
+                  onChange={(e) => dispatch(filterByPrice(e.target.value))}
                ></input>
             </li>
          </ul>

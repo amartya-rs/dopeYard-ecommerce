@@ -1,23 +1,15 @@
 import { CartIcon, HeartIcon, UserIcon, LogoutIcon } from "../../assets/icons";
 import { Link } from "react-router-dom";
-import { useCart } from "../../context/cart-context";
-import { useAuth } from "../../context/auth-context";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/auth/authSlice";
+import { cartCount } from "../../utils/cartCount";
 import "./top-nav.css";
 
 const TopNav = () => {
-   const { state, dispatch } = useCart();
-   const { authState, authDispatch } = useAuth();
-
-   const cartCount = () => {
-      return state.cartData.reduce((sum, i) => sum + i.qty, 0);
-   };
-
-   //logging out user
-   const logoutUser = () => {
-      localStorage.removeItem("token");
-      authDispatch({ type: "TOGGLE_LOGIN" });
-      authDispatch({ type: "CLEAR_FIELDS" });
-   };
+   const { isLoggedIn } = useSelector((state) => state.auth);
+   const { cart } = useSelector((state) => state.cart);
+   const { wishlist } = useSelector((state) => state.wishlist);
+   const dispatch = useDispatch();
 
    return (
       <>
@@ -39,8 +31,8 @@ const TopNav = () => {
                </li>
                <li>
                   <Link to="/login">
-                     {authState.isLoggedIn ? (
-                        <LogoutIcon onClick={logoutUser} />
+                     {isLoggedIn ? (
+                        <LogoutIcon onClick={() => dispatch(logout())} />
                      ) : (
                         <UserIcon />
                      )}
@@ -49,9 +41,9 @@ const TopNav = () => {
                <li>
                   <Link to="/wishlist">
                      <div className="badge-container">
-                        {authState.isLoggedIn ? (
+                        {isLoggedIn ? (
                            <div className="number-badge">
-                              {state.wishlistData.length}
+                              {wishlist?.length}
                            </div>
                         ) : (
                            ""
@@ -63,8 +55,8 @@ const TopNav = () => {
                <li>
                   <Link to="/cart">
                      <div className="badge-container">
-                        {authState.isLoggedIn ? (
-                           <div className="number-badge">{cartCount()}</div>
+                        {isLoggedIn ? (
+                           <div className="number-badge">{cartCount(cart)}</div>
                         ) : (
                            ""
                         )}

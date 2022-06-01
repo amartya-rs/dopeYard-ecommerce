@@ -1,71 +1,31 @@
-import { TopNav } from "../../components";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useAuth } from "../../context/auth-context";
 import "./login-page.css";
+import { useState } from "react";
+import { TopNav } from "../../components";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/server-requests";
 
 const LoginPage = () => {
-   const navigate = useNavigate();
-   const { authState, authDispatch } = useAuth();
+   const dispatch = useDispatch();
+   const [userDetails, setUserDetails] = useState({
+      email: "",
+      password: "",
+   });
 
-   //login handler
-   const loginHandler = async () => {
-      if (authState.email !== "" && authState.password !== "") {
-         try {
-            const response = await axios.post(`/api/auth/login`, {
-               email: authState.email,
-               password: authState.password,
-            });
-            // saving the encodedToken in the localStorage
-            localStorage.setItem("token", response.data.encodedToken);
-            authDispatch({
-               type: "SET_USER_CREDENTIALS",
-               payload: response.data.foundUser,
-            });
-            navigate("/products");
-         } catch {
-            authDispatch({
-               type: "SET_ERROR",
-               payload: "Credentials not found",
-            });
-         }
-      } else {
-         authDispatch({
-            type: "SET_ERROR",
-            payload: "Enter your details",
-         });
-      }
-   };
-
-   //setting the guest credentials
-   const guestLogin = () => {
-      authDispatch({
-         type: "SET_GUEST_CREDENTIALS",
-         payload: ["guest@gmail.com", "guest123"],
-      });
-   };
-
-   //checking user credentials
-   const checkCredentials = ({ name, value }) => {
-      if (value === "") {
-         authDispatch({
-            type: "SET_ERROR",
-            payload: `Enter your ${name}`,
-         });
-         return "";
-      } else {
-         authDispatch({
-            type: "SET_ERROR",
-            payload: "",
-         });
-         return value;
-      }
+   const loginHandler = async (e) => {
+      e.preventDefault();
+      dispatch(
+         login({
+            email: userDetails.email,
+            password: userDetails.password,
+         })
+      );
    };
 
    return (
       <div className="login-page">
          <TopNav />
-         <form className="auth-form">
+         <form className="auth-form" onSubmit={loginHandler}>
             <div className="form-header">
                <h5>LOGIN</h5>
                <p className="p-sm">Please enter your email and password.</p>
@@ -77,16 +37,17 @@ const LoginPage = () => {
                   </label>
                   <input
                      onChange={(e) =>
-                        authDispatch({
-                           type: "SET_EMAIL",
-                           payload: checkCredentials(e.target),
+                        setUserDetails({
+                           ...userDetails,
+                           email: e.target.value,
                         })
                      }
                      className="text-input"
                      type="email"
                      name="email"
                      placeholder="kanye@xyz.com"
-                     value={authState.email}
+                     value={userDetails.email}
+                     required
                   />
                </div>
                <div>
@@ -95,32 +56,37 @@ const LoginPage = () => {
                   </label>
                   <input
                      onChange={(e) =>
-                        authDispatch({
-                           type: "SET_PW",
-                           payload: checkCredentials(e.target),
+                        setUserDetails({
+                           ...userDetails,
+                           password: e.target.value,
                         })
                      }
                      name="password"
                      className="text-input"
                      type="password"
                      placeholder="***************"
-                     value={authState.password}
+                     value={userDetails.password}
+                     required
                   />
                </div>
             </div>
-            <span className="auth-error">{authState.error}</span>
-            <button
-               className="button primary"
-               type="button"
-               onClick={loginHandler}
-            >
+            <button className="button primary" type="submit">
                LOGIN
             </button>
             <div className="form-footer">
                <p className="p-sm">Not a user yet?</p>
                <Link to="/signup">Sign Up</Link>
             </div>
-            <span className="helper font-medium" onClick={guestLogin}>
+            <span
+               className="helper font-medium"
+               onClick={() =>
+                  setUserDetails({
+                     ...userDetails,
+                     email: "guest@gmail.com",
+                     password: "guest123",
+                  })
+               }
+            >
                Use Guest Credentials
             </span>
          </form>

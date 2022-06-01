@@ -59,6 +59,7 @@ header .button {
 /*card overlay on hover*/
 .home-page .overlay {
    opacity: 0;
+   transition: all 0.25s ease-in-out;
 }
 
 .home-page .card:hover .overlay {

@@ -1,7 +1,9 @@
-import { useCart } from "../../context/cart-context";
+import { useDispatch, useSelector } from "react-redux";
+import { sortByPrice } from "../../features/product/productSlice";
 
 export const SortByPrice = () => {
-   const { state, dispatch } = useCart();
+   const dispatch = useDispatch();
+   const { sortByPrice: sortedByPrice } = useSelector((state) => state.product);
 
    return (
       <>
@@ -9,13 +11,8 @@ export const SortByPrice = () => {
          <ul className="side-nav font-medium pl-1">
             <li>
                <input
-                  onChange={(e) =>
-                     dispatch({
-                        type: "SORT_BY_PRICE",
-                        payload: e.target.value,
-                     })
-                  }
-                  checked={state.sortByPrice === "HIGH_TO_LOW" ? true : false}
+                  onChange={(e) => dispatch(sortByPrice(e.target.value))}
+                  checked={sortedByPrice === "HIGH_TO_LOW" ? true : false}
                   value="HIGH_TO_LOW"
                   id="price-1"
                   name="price"
@@ -25,14 +22,9 @@ export const SortByPrice = () => {
             </li>
             <li>
                <input
-                  onChange={(e) =>
-                     dispatch({
-                        type: "SORT_BY_PRICE",
-                        payload: e.target.value,
-                     })
-                  }
+                  onChange={(e) => dispatch(sortByPrice(e.target.value))}
                   value="LOW_TO_HIGH"
-                  checked={state.sortByPrice === "LOW_TO_HIGH" ? true : false}
+                  checked={sortedByPrice === "LOW_TO_HIGH" ? true : false}
                   id="price-2"
                   name="price"
                   type="radio"
