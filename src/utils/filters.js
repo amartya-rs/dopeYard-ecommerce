@@ -30,6 +30,7 @@ const filterByRating = (state) => {
       (item) => item.rating >= Number(state.filterByRating)
    );
 };
+
 const filterByPrice = (state) => {
    return filterByRating(state).filter(
       (item) => item.discountPrice <= state.filterByPrice
@@ -50,4 +51,11 @@ const sortedByPrice = (state) => {
    return filterByPrice(state);
 };
 
-export { sortedByPrice };
+const filterBySearchInput = (state) => {
+   if (!state.searchInput) return sortedByPrice(state);
+   return sortedByPrice(state).filter((item) =>
+      item.title.toLowerCase().includes(state.searchInput)
+   );
+};
+
+export { filterBySearchInput };

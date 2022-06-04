@@ -13,3 +13,22 @@
 .brand {
    margin-right: 1rem;
 }
+
+.search-bar {
+   position: relative;
+
+   display: flex;
+   align-items: center;
+   gap: 10px;
+}
+
+.search-bar svg {
+   cursor: pointer;
+
+   position: absolute;
+   right: 1rem;
+}
+
+.search-bar svg:hover {
+   transform: scale(1.08);
+}

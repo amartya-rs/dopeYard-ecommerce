@@ -57,3 +57,8 @@ aside li {
 hr {
    margin: 1rem 0;
 }
+
+.no-product-msg {
+   color: var(--GREY);
+   text-align: center;
+}

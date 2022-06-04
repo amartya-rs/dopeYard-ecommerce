@@ -16,6 +16,7 @@ const initialState = {
       longsleeve: false,
    },
    inStock: false,
+   searchInput: "",
 };
 
 export const productSlice = createSlice({
@@ -48,6 +49,9 @@ export const productSlice = createSlice({
          state.filterByCategory.cap = false;
          state.inStock = false;
       },
+      setSearchInput: (state, action) => {
+         state.searchInput = action.payload;
+      },
    },
    extraReducers: {
       [loadProductData.fulfilled]: (state, action) => {
@@ -76,6 +80,7 @@ export const {
    filterByRating,
    sortByPrice,
    resetFilters,
+   setSearchInput,
 } = productSlice.actions;
 
 export default productSlice.reducer;
