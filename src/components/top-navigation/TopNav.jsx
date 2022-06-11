@@ -21,9 +21,9 @@ const TopNav = () => {
                {" "}
                <span className="h5 brand">dopeYard</span>{" "}
             </Link>
-            <div class="search-bar">
+            <div className="search-bar">
                <input
-                  class="text-input"
+                  className="text-input"
                   type="text"
                   placeholder="Search"
                   value={searchInput}
