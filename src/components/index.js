@@ -9,6 +9,9 @@ import { CategoryCard } from "./category-card/CategoryCard";
 import { Header } from "./header/Header";
 import { PrivateRoute } from "./auth/PrivateRoute";
 import { RestrictedRoute } from "./auth/RestrictedRoute";
+import { Modal } from "./modal/Modal";
+import { CheckoutCard } from "./checkout-card/CheckoutCard";
+import { PriceCard } from "./price-card/PriceCard";
 
 export {
    HomePageCard,
@@ -22,4 +25,7 @@ export {
    Header,
    PrivateRoute,
    RestrictedRoute,
+   Modal,
+   CheckoutCard,
+   PriceCard,
 };
