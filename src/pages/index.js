@@ -5,6 +5,7 @@ import { SignUpPage } from "./signup-page/SignUpPage";
 import { CartPage } from "./cart-page/CartPage";
 import { Page404 } from "./page-404/Page404";
 import { WishlistPage } from "./wishlist-page/WishlistPage";
+import { CheckoutPage } from "./checkout-page/CheckoutPage";
 
 export {
    HomePage,
@@ -14,4 +15,5 @@ export {
    CartPage,
    WishlistPage,
    Page404,
+   CheckoutPage,
 };

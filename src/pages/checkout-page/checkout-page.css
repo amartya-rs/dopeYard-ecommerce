@@ -1,0 +1,70 @@
+.checkout-page {
+   display: grid;
+   grid-template-rows: 4.5rem 1fr auto;
+   grid-template-areas:
+      "nav"
+      "main"
+      "footer";
+   min-height: 100vh;
+}
+
+.checkout-page main {
+   padding: 2rem 5rem;
+
+   display: flex;
+   justify-content: center;
+   gap: 10rem;
+}
+
+.order-summary,
+.order-address {
+   min-height: 15rem;
+   height: max-content;
+   width: 30rem;
+   border: 1px solid var(--PRIMARY-COLOR);
+   border-radius: 10px;
+   padding: 1rem;
+}
+
+.order-address {
+   display: flex;
+   flex-direction: column;
+}
+
+.order-address .button {
+   margin: auto;
+   margin-bottom: 0;
+}
+
+.address-wrapper {
+   background-color: var(--PRIMARY-BG);
+   padding: 10px;
+   border-radius: 5px;
+
+   position: relative;
+}
+
+.icon-wrapper {
+   display: inline-flex;
+   gap: 1rem;
+
+   position: absolute;
+   right: 1rem;
+   bottom: 1rem;
+}
+
+.address-wrapper li {
+   margin: 5px;
+}
+
+.grey-text {
+   color: var(--GREY);
+}
+
+.text-center {
+   text-align: center;
+}
+
+.address-wrapper .feather {
+   cursor: pointer;
+}

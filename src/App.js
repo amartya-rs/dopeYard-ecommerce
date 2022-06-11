@@ -6,6 +6,7 @@ import {
    CartPage,
    WishlistPage,
    Page404,
+   CheckoutPage,
 } from "./pages/index";
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute, RestrictedRoute } from "./components/index";
@@ -26,6 +27,7 @@ const App = () => {
             <Route element={<PrivateRoute />}>
                <Route path="/cart" element={<CartPage />} />
                <Route path="/wishlist" element={<WishlistPage />} />
+               <Route path="/checkout" element={<CheckoutPage />} />
             </Route>
             {/*restricted routes*/}
             <Route element={<RestrictedRoute />}>
