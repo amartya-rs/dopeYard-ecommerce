@@ -123,6 +123,22 @@ export const updateProductQuantity = createAsyncThunk(
    }
 );
 
+export const clearCart = createAsyncThunk(
+   "/cart/clearCart",
+   async (thunkAPI) => {
+      try {
+         const response = await axios.delete(`/api/user/cart/all`, {
+            headers: {
+               authorization: localStorage.getItem("token"),
+            },
+         });
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
 /********** wishlist **********/
 export const addToWishlist = createAsyncThunk(
    "/wishlist/addToWishlist",
@@ -155,6 +171,70 @@ export const removeFromWishlist = createAsyncThunk(
                authorization: localStorage.getItem("token"),
             },
          });
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+/********** checkout **********/
+export const addAddress = createAsyncThunk(
+   "/checkout/addAddress",
+   async (address, thunkAPI) => {
+      try {
+         const response = await axios.post(
+            "/api/user/address",
+            {
+               address: address,
+            },
+            {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            }
+         );
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const updateAddress = createAsyncThunk(
+   "/checkout/updateAddress",
+   async ({ addressId, updatedAddress }, thunkAPI) => {
+      try {
+         const response = await axios.post(
+            `/api/user/address/${addressId}`,
+            {
+               address: updatedAddress,
+            },
+            {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            }
+         );
+         return response.data;
+      } catch (error) {
+         return thunkAPI.rejectWithValue(error.response.data);
+      }
+   }
+);
+
+export const removeAddress = createAsyncThunk(
+   "/checkout/removeAddress",
+   async (address, thunkAPI) => {
+      try {
+         const response = await axios.delete(
+            `/api/user/address/${address._id}`,
+            {
+               headers: {
+                  authorization: localStorage.getItem("token"),
+               },
+            }
+         );
          return response.data;
       } catch (error) {
          return thunkAPI.rejectWithValue(error.response.data);

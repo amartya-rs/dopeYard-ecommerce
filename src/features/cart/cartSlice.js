@@ -3,6 +3,7 @@ import {
    addToCart,
    removeFromCart,
    updateProductQuantity,
+   clearCart,
 } from "../server-requests";
 import { toastSuccess, toastError, toastInfo } from "../../utils/useToast";
 
@@ -39,6 +40,14 @@ export const cartSlice = createSlice({
          toastSuccess("Quantity updated");
       },
       [updateProductQuantity.rejected]: (state, action) => {
+         state.status = "rejected";
+         toastError(action.payload?.errors[0]);
+      },
+      [clearCart.fulfilled]: (state, action) => {
+         state.status = "fulfilled";
+         state.cart = action.payload.cart;
+      },
+      [clearCart.rejected]: (state, action) => {
          state.status = "rejected";
          toastError(action.payload?.errors[0]);
       },
