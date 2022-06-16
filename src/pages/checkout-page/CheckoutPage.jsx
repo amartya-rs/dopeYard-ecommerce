@@ -7,6 +7,7 @@ import { toastError, toastSuccess } from "../../utils/useToast";
 import { useNavigate } from "react-router-dom";
 import { clearCart, removeAddress } from "../../features/server-requests";
 import { Edit, Delete } from "../../assets/icons";
+import { useState } from "react";
 import {
    Modal,
    TopNav,
@@ -17,6 +18,7 @@ import {
 import "./checkout-page.css";
 
 const CheckoutPage = () => {
+   const [selectedAddress, setSelectedAddress] = useState("");
    const { cart } = useSelector((state) => state.cart);
    const { userAddress } = useSelector((state) => state.checkout);
    const dispatch = useDispatch();
@@ -35,18 +37,27 @@ const CheckoutPage = () => {
                </div>
                <div className="order-address mt-4">
                   <h5 className="font-medium">Delivery Address</h5>
-                  <div>
+                  <ul>
                      {userAddress?.length !== 0 ? (
-                        userAddress.map((ele) => (
-                           <div className="address-wrapper my-1" key={ele._id}>
-                              <ul>
-                                 <li>{ele.fullName}</li>
-                                 <li>{ele.address}</li>
-                                 <li>{ele.city}</li>
-                                 <li>{ele.state}</li>
-                                 <li>{ele.pin}</li>
-                                 <li>{ele.phone}</li>
-                              </ul>
+                        userAddress.map((ele, index) => (
+                           <li className="address-wrapper my-1" key={ele._id}>
+                              <input
+                                 name="delivery address"
+                                 id={`address-${index}`}
+                                 type="radio"
+                                 onChange={(e) =>
+                                    setSelectedAddress(e.target.value)
+                                 }
+                                 value={ele}
+                              />
+                              <label htmlFor={`address-${index}`}>
+                                 <div className="user-address">
+                                    <div>{ele.fullName}</div>
+                                    <div>{`${ele.address}, ${ele.city}`}</div>
+                                    <div>{`${ele.state} - ${ele.pincode}`}</div>
+                                    <div>Phone: {ele.phone}</div>
+                                 </div>
+                              </label>
                               <div className="icon-wrapper">
                                  <Edit
                                     onClick={() => {
@@ -63,14 +74,14 @@ const CheckoutPage = () => {
                                     onClick={() => dispatch(removeAddress(ele))}
                                  />
                               </div>
-                           </div>
+                           </li>
                         ))
                      ) : (
                         <h5 className="grey-text font-medium text-center">
                            No address found
                         </h5>
                      )}
-                  </div>
+                  </ul>
                   <button
                      className="button primary"
                      onClick={() => dispatch(toggleModal())}
@@ -85,12 +96,16 @@ const CheckoutPage = () => {
                      className="button primary mt-1"
                      onClick={() => {
                         if (userAddress.length === 0) {
-                           toastError("Enter an address");
-                        } else {
-                           dispatch(clearCart());
-                           navigate("/");
-                           toastSuccess("Order placed successfully");
+                           toastError("Add an address");
+                           return;
                         }
+                        if (selectedAddress === "") {
+                           toastError("Select an address");
+                           return;
+                        }
+                        dispatch(clearCart());
+                        navigate("/");
+                        toastSuccess("Order placed successfully");
                      }}
                   >
                      PLACE ORDER

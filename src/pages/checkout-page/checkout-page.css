@@ -53,10 +53,6 @@
    bottom: 1rem;
 }
 
-.address-wrapper li {
-   margin: 5px;
-}
-
 .grey-text {
    color: var(--GREY);
 }
@@ -65,6 +61,11 @@
    text-align: center;
 }
 
-.address-wrapper .feather {
+.address-wrapper .feather,
+label {
    cursor: pointer;
+}
+
+.user-address {
+   padding: 5px 10px;
 }
